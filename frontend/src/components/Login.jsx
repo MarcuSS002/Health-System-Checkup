@@ -65,6 +65,13 @@ export default function Login() {
           >
             Login
           </button>
+          
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Don't have an account?{" "}
+            <a href="/register" className="text-blue-500 hover:underline">
+              Register
+            </a>
+          </p>
         </form>
         {message && (
           <p

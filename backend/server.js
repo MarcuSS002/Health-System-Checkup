@@ -21,6 +21,7 @@ const { MONGODB_URI, PORT=5000, API_KEY } = process.env;
 mongoose.connect(MONGODB_URI).then(()=>console.log("Mongo connected")).catch(console.error);
 
 
+
 app.use((req,res,next)=>{
   if (req.path.startsWith("/api/")) {
     const key = req.headers["x-api-key"];
@@ -84,6 +85,18 @@ app.get("/api/machines/:id", async (req,res)=>{
   if (!m) return res.status(404).json({error:"not found"});
   res.json(m);
 });
+
+// DELETE machine by ID
+app.delete("/api/machines/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Machine.findByIdAndDelete(id);  // if MongoDB
+    res.json({ success: true, message: "Machine deleted" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 // CSV export
 app.get("/api/export.csv", async (req,res)=>{
